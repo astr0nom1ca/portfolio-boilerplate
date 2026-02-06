@@ -13,13 +13,17 @@ export default function Hero({ data }: { data: any }) {
       {/* 2. Background Image Logic */}
       {data?.backgroundImage?.asset && (
         <>
-          <img 
-            src={urlFor(data.backgroundImage)
-              .width(1200) 
-              .quality(75) 
-              .auto('format') 
-              .url()}
-          />
+        <img 
+          src={urlFor(data.backgroundImage)
+            .width(1600)           // 1. Slightly smaller width (huge savings)
+            .quality(75)           // 2. Compress the file (invisible to the eye)
+            .auto('format') 
+            .url()} 
+          className="absolute inset-0 w-full h-full object-cover"
+          alt={data.backgroundImage?.alt || "Hero background"}
+          loading="eager"     
+          // 3. Tells the browser: "Download this FIRST"
+        />
           {/* 3. Overlay: Ensures the text is always readable over the image */}
           <div className="absolute inset-0 bg-slate-900/60" />
         </>
