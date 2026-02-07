@@ -65,7 +65,7 @@ const query = `{
     }
   }
 }`;
-  return await client.fetch(query, {}, { next: { revalidate: 30 } });
+  return await client.fetch(query, {}, { next: { revalidate: 60 } });
 }
 
 export default async function Page() {
