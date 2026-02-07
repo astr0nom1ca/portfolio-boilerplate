@@ -73,6 +73,9 @@ export default async function Page() {
 
   return (
     <main>
+      <head>
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+      </head>
       {/* Header usually stays global/fixed */}
       <Header data={header} />
       
