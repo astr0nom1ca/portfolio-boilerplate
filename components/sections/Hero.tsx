@@ -50,7 +50,7 @@ export default function Hero({ data }: { data: any }) {
               rounded-full font-bold text-center
               transition-all duration-300 active:scale-95
               ${index === 0 
-                ? "bg-black text-white dark:bg-white dark:text-black hover:opacity-90 shadow-lg" 
+                ? "bg-black text-white dark:bg-white dark:text-black hover:bg-blue shadow-lg" 
                 : "bg-transparent border-2 border-black text-black dark:border-white dark:text-white hover:bg-black/5 dark:hover:bg-white/10"
               }
             `}

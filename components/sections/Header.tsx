@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, Mail } from 'lucide-react'; // Clean syntax, now optimized by config
+//import { Menu} from 'lucide-react'; // Clean syntax, now optimized by config               <!--<Menu size={16} />-->
 import Logo from './SocialLinks' 
 import NavOverlay from './NavOverlay'
 
@@ -29,7 +29,7 @@ export default function Header({ data }: { data: any }) {
               Explore
             </span>
             <div className="bg-black text-white p-1.5 rounded-full group-hover:rotate-180 transition-transform duration-500">
-              <Menu size={16} />
+
             </div>
           </button>
         </div>
