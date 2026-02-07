@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu } from 'lucide-react' // Back to basics for the test
+import { Menu, Mail } from 'lucide-react'; // Clean syntax, now optimized by config
 import Logo from './SocialLinks' 
 import NavOverlay from './NavOverlay'
 
