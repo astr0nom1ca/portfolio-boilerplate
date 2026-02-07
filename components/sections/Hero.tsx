@@ -15,12 +15,11 @@ export default function Hero({ data }: { data: any }) {
         <>
       <img 
         src={urlFor(data.backgroundImage)
-          .width(1000)      // Dropping from 1600 to 1000 cuts file size by ~60%
-          .quality(65)      // 65 quality is still "Retina" sharp on mobile
+          .width(800)           // Drop from 1000 to 800 (still looks great on phones)
+          .quality(60)           // Drop quality to 60 (Sanity's compression is very clean)
           .auto('format') 
           .url()} 
         className="absolute inset-0 w-full h-full object-cover"
-        alt={data.backgroundImage?.alt || "Hero background"}
         {...({ fetchpriority: "high" } as any)}
       />
           {/* 3. Overlay: Ensures the text is always readable over the image */}

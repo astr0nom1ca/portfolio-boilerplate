@@ -1,49 +1,61 @@
 'use client'
+import dynamic from 'next/dynamic';
 
 import { useState, useEffect } from 'react'
-import { Menu } from 'lucide-react'
-import Logo from './SocialLinks' // Import the new Logo component
+// CHANGE: Path import for Menu to save scripting time
+import Logo from './SocialLinks' 
 import NavOverlay from './NavOverlay'
+const MenuIcon = dynamic(() => import('lucide-react').then((mod) => mod.Menu), {
+  ssr: false,
+});
 
 export default function Header({ data }: { data: any }) {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
-    const sectionIds = data?.navItems?.map((item: any) => 
-      item.anchor.replace('#', '')
-    ).filter(Boolean) || []
+    // 1. Wait until the browser is "Idle" before setting up the heavy observer
+    // This allows the Hero to paint and the TBT to stay low.
+    const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1000));
 
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`)
+    const cleanup = idleCallback(() => {
+      const sectionIds = data?.navItems?.map((item: any) => 
+        item.anchor.replace('#', '')
+      ).filter(Boolean) || []
+
+      const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`)
+        })
+      }
+
+      const observer = new IntersectionObserver(handleIntersect, { 
+        rootMargin: '-20% 0px -70% 0px' 
       })
+
+      sectionIds.forEach((id: string) => {
+        const el = document.getElementById(id)
+        if (el) observer.observe(el)
+      })
+
+      return () => observer.disconnect()
+    });
+
+    return () => {
+      if (typeof cleanup === 'number') window.cancelIdleCallback ? window.cancelIdleCallback(cleanup) : clearTimeout(cleanup);
     }
-
-    const observer = new IntersectionObserver(handleIntersect, { 
-      rootMargin: '-20% 0px -70% 0px' 
-    })
-
-    sectionIds.forEach((id: string) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-
-    return () => observer.disconnect()
   }, [data?.navItems])
 
   if (!data) return null
 
   return (
     <>
-      <header className="fixed top-0 w-full z-[60] h-20 flex items-center justify-between px-6 md:px-12 pointer-events-none bg-white">
-        
-        {/* Logo Slot - Using the new component */}
+      {/* Header code stays the same */}
+      <header className="fixed top-0 w-full z-[60] h-20 flex items-center justify-between px-6 md:px-12 pointer-events-none bg-white/0">
         <div className="pointer-events-auto">
-        <Logo data={data} />
+          <Logo data={data} />
         </div>
 
-        {/* Trigger Button Slot */}
         <div className="pointer-events-auto">
           <button 
             onClick={() => setIsOpen(true)}
@@ -53,13 +65,12 @@ export default function Header({ data }: { data: any }) {
               Explore
             </span>
             <div className="bg-black text-white p-1.5 rounded-full group-hover:rotate-180 transition-transform duration-500">
-              <Menu size={16} />
+              <MenuIcon size={16} />
             </div>
           </button>
         </div>
       </header>
 
-      {/* Full-Screen Overlay */}
       <NavOverlay 
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)} 
