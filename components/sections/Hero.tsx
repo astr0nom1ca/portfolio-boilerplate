@@ -15,7 +15,7 @@ export default function Hero({ data }: { data: any }) {
         <>
       <img 
         src={urlFor(data.backgroundImage).width(800).auto('format').url()} 
-        alt={data.backgroundImage?.alt || "Professional background image for [Your Name]"} // Add this!
+        alt={data.backgroundImage?.alt || "Background image"} // Add this!
         className="absolute inset-0 w-full h-full object-cover"
         {...({ fetchpriority: "high" } as any)}
       />
@@ -39,11 +39,21 @@ export default function Hero({ data }: { data: any }) {
       {/* 4. Dynamic CTA Buttons Array */}
       {/* Wrap your buttons in a div with a larger gap */}
       <div className="flex flex-col sm:flex-row gap-6 mt-8"> 
-        {data.ctaButtons?.map((btn: any) => (
+        {data.ctaButtons?.map((btn: any, index: number) => (
           <a 
             key={btn.ctaText}
             href={btn.ctaLink}
-            className="min-h-[48px] min-w-[140px] px-8 py-4 flex items-center justify-center ..." 
+            // Index 0 gets a solid black/white background, others get an outline style
+            className={`
+              min-h-[56px] min-w-[160px] px-8 py-4 
+              flex items-center justify-center 
+              rounded-full font-bold text-center
+              transition-all duration-300 active:scale-95
+              ${index === 0 
+                ? "bg-black text-white dark:bg-white dark:text-black hover:opacity-90 shadow-lg" 
+                : "bg-transparent border-2 border-black text-black dark:border-white dark:text-white hover:bg-black/5 dark:hover:bg-white/10"
+              }
+            `}
           >
             {btn.ctaText}
           </a>
