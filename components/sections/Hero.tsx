@@ -14,11 +14,8 @@ export default function Hero({ data }: { data: any }) {
       {data?.backgroundImage?.asset && (
         <>
       <img 
-        src={urlFor(data.backgroundImage)
-          .width(800)           // Drop from 1000 to 800 (still looks great on phones)
-          .quality(60)           // Drop quality to 60 (Sanity's compression is very clean)
-          .auto('format') 
-          .url()} 
+        src={urlFor(data.backgroundImage).width(800).auto('format').url()} 
+        alt={data.backgroundImage?.alt || "Professional background image for [Your Name]"} // Add this!
         className="absolute inset-0 w-full h-full object-cover"
         {...({ fetchpriority: "high" } as any)}
       />
@@ -40,18 +37,15 @@ export default function Hero({ data }: { data: any }) {
         )}
         
       {/* 4. Dynamic CTA Buttons Array */}
-      <div className="mt-10 flex flex-wrap justify-center gap-4">
-        {data?.ctaButtons?.map((button: any, index: number) => (
-          <a key={index} href={button.ctaLink || "#"}>
-            <button 
-              className={`px-8 py-4 transition-colors text-lg font-semibold rounded-full shadow-lg cursor-pointer ${
-                index === 0 
-                  ? "bg-blue-600 hover:bg-blue-700 text-white" // Primary style for first button
-                  : "bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm" // Secondary style for others
-              }`}
-            >
-              {button.ctaText}
-            </button>
+      {/* Wrap your buttons in a div with a larger gap */}
+      <div className="flex flex-col sm:flex-row gap-6 mt-8"> 
+        {data.ctaButtons?.map((btn: any) => (
+          <a 
+            key={btn.ctaText}
+            href={btn.ctaLink}
+            className="min-h-[48px] min-w-[140px] px-8 py-4 flex items-center justify-center ..." 
+          >
+            {btn.ctaText}
           </a>
         ))}
       </div>

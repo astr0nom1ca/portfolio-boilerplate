@@ -72,7 +72,7 @@ window.open(`https://wa.me/${cleanNumber}`, '_blank');
             <p className="text-gray-600 dark:text-zinc-400">Click below to start a WhatsApp conversation instantly.</p>
             <button 
   onClick={handleWhatsAppClick}
-  className="inline-block w-full bg-green-600 text-white font-bold py-4 px-8 rounded-xl text-center hover:bg-green-700 transition-transform active:scale-95"
+  className="inline-block w-full bg-[#128C7E]-600 text-white font-bold py-4 px-8 rounded-xl text-center hover:bg-green-700 transition-transform active:scale-95"
 >
   Chat on WhatsApp
 </button>
