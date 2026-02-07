@@ -1,6 +1,6 @@
 'use client'
 
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import { m, LazyMotion, domAnimation } from 'framer-motion'
 import { urlFor } from '@/sanity/lib/image'
 import { useRef, useEffect, useState } from 'react'
 

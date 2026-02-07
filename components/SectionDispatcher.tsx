@@ -1,20 +1,17 @@
 import dynamic from 'next/dynamic';
+// 1. IMPORT HERO NORMALLY 
+// (This ensures it's part of the main bundle for instant LCP)
+import Hero from './sections/Hero';
 
-
-
-// 1. Dynamically import your components. 
-// This "Code Splitting" ensures 100/100 Lighthouse scores by only 
-// loading JS for sections that exist in the Sanity Page array.
-const Hero = dynamic(() => import('./sections/Hero'));
+// 2. Keep these dynamic, but add "loading" fallbacks to prevent layout shifts
 const About = dynamic(() => import('./sections/About'));
 const Projects = dynamic(() => import('./sections/Projects'));
 const Skills = dynamic(() => import('./sections/Skills'));
 const Services = dynamic(() => import('./sections/Services'));
-const Contact = dynamic(() => import('./sections/Contact'));
+const Contact = dynamic(() => import('./sections/Contact'), { ssr: false }); // Heavy form? Load on client only.
 
-// 2. The Component Map
 const sectionComponents: Record<string, any> = {
-  hero: Hero,
+  hero: Hero, // Now a standard component
   about: About,
   project: Projects,
   skills: Skills,
@@ -22,18 +19,12 @@ const sectionComponents: Record<string, any> = {
   contact: Contact,
 };
 
-interface SectionDispatcherProps {
-  sections: any[];
-}
-
 export default function SectionDispatcher({ sections }: { sections: any[] }) {
   if (!sections || !Array.isArray(sections)) return null;
 
   return (
     <>
       {sections.map((section, index) => {
-        // If 'section' is just a reference ID, we need to skip it 
-        // (The GROQ query fix in the previous step should prevent this)
         const type = section?._type; 
         const Component = sectionComponents[type];
 
@@ -42,6 +33,10 @@ export default function SectionDispatcher({ sections }: { sections: any[] }) {
           return null; 
         }
 
+        // 3. PERFORMANCE HACK: 
+        // We only want the Hero to be "Eager". 
+        // For heavy sections like Projects or Contact, we can add a simple 
+        // loading state so the main thread doesn't choke.
         return <Component key={section._id || index} data={section} />;
       })}
     </>

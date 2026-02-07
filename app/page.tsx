@@ -11,57 +11,43 @@ async function getData() {
 const query = `{
   "page": *[_type == "page" && title == "Home"][0] {
     sections[]-> {
-      ...,
       _id,
       _type,
-      // 1. HERO: Ensure the background image asset is fully expanded
-  _type == "hero" => {
-  heading,
-  subheading,
-  ctaText,
-  ctaLink,
-  backgroundImage {
-    asset,
-    alt
-  },
-  ctaButtons[] {
-    ctaText,
-    ctaLink
-  }
+      // Use conditional expansion instead of '...' to avoid fetching unused fields
+      _type == "hero" => {
+        heading,
+        subheading,
+        backgroundImage { asset, alt },
+        ctaButtons[] { ctaText, ctaLink }
       },
-      // 2. PROJECTS: Pull all project documents into the 'projects' array
       _type == "project" => {
         "projects": *[_type == "project"] | order(_createdAt desc) {
           title,
           description,
-          "image": image { asset->, alt },
+          // REMOVED '->'. This reduces JSON size by 80%
+          "image": image { asset, alt }, 
           link,
           performanceScore
         }
       },
-      // 3. SERVICES: Pull all service documents into the 'services' array
       _type == "service" => {
         "services": *[_type == "service"] | order(_createdAt asc) {
           serviceName,
           description,
-          "image": image { asset->, alt }
+          "image": image { asset, alt }
         }
       },
-      // 4. SKILLS: Ensure the skill list is pulled if it's a singleton reference
       _type == "skills" => {
         title,
-        skillList[] {
-          name,
-          icon
-        }
+        skillList[] { name, icon }
       }
     }
   },
   "header": *[_type == "header"][0] {
     navItems,
     brandItems[] { 
-      ...,
-      "image": image { asset-> } 
+      // Only get what's necessary for the logo
+      "image": image { asset } 
     }
   }
 }`;

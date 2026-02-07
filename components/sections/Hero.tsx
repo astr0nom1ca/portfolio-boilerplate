@@ -38,7 +38,7 @@ export default function Hero({ data }: { data: any }) {
         
       {/* 4. Dynamic CTA Buttons Array */}
       {/* Wrap your buttons in a div with a larger gap */}
-      <div className="flex flex-col sm:flex-row gap-6 mt-8"> 
+      <div className="flex flex-col sm:flex-row gap-6 mt-8 items-center justify-center w-full"> 
         {data.ctaButtons?.map((btn: any, index: number) => (
           <a 
             key={btn.ctaText}
