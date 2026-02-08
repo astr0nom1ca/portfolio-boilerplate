@@ -8,7 +8,7 @@ const About = dynamic(() => import('./sections/About'));
 const Projects = dynamic(() => import('./sections/Projects'));
 const Skills = dynamic(() => import('./sections/Skills'));
 const Services = dynamic(() => import('./sections/Services'));
-const Contact = dynamic(() => import('./sections/Contact'), { ssr: false }); // Heavy form? Load on client only.
+const Contact = dynamic(() => import('./sections/Contact')); // Heavy form? Load on client only.
 
 const sectionComponents: Record<string, any> = {
   hero: Hero, // Now a standard component
