@@ -14,8 +14,8 @@ export default function About({ data }: { data: any }) {
           {data.profileImage && (
             <img 
               // Using .width(600) is great for Lighthouse (Image Optimization)
-              src={urlFor(data.profileImage).width(600).auto('format').url()} 
-              alt={data.profileImage?.alt || "Profile Image"} 
+              src={urlFor(data.image).width(600).auto('format').url()}
+              alt={data.image?.alt || "Profile Image"} 
               className="rounded-2xl shadow-xl w-full object-cover aspect-[4/5]"
             />
           )}

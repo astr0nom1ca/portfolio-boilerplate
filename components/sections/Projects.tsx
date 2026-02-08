@@ -28,8 +28,6 @@ export default function Projects({ data }: { data: any }) {
                   src={urlFor(project.image).width(800).url()} 
                   alt={project.title}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading='eager'
-                  fetchPriority='high'
                 />
               </div>
             )}

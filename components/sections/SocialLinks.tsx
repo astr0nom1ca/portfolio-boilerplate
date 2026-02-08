@@ -19,8 +19,6 @@ export default function BrandBar({ data }: { data: any }) {
             src={urlFor(item.image).width(80).url()} 
             alt={item.alt || "icon"} 
             className="h-8 w-8 object-contain"
-            loading='eager'
-            fetchPriority='high'
           />
         </a>
       ))}

@@ -24,11 +24,16 @@ const query = `{
         "projects": *[_type == "project"] | order(_createdAt desc) {
           title,
           description,
-          // REMOVED '->'. This reduces JSON size by 80%
           "image": image { asset, alt }, 
           link,
           performanceScore
         }
+      },
+      _type == "about" => {
+        title,
+        "image": profileImage { asset, alt },
+        bio,
+        stats[] { label, value }
       },
       _type == "service" => {
         "services": *[_type == "service"] | order(_createdAt asc) {
