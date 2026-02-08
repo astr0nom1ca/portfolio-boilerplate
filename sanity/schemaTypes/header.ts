@@ -1,5 +1,4 @@
 import { defineField, defineType } from 'sanity'
-import { PanelTop } from 'lucide-react'
 
 interface HeaderPreviewSelection {
   brandItems?: any[]
@@ -10,7 +9,6 @@ export default defineType({
   name: 'header',
   title: 'Header',
   type: 'document',
-  icon: PanelTop,
   fields: [
     defineField({
       name: 'brandItems',

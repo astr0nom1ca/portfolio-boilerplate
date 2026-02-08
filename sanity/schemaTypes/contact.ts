@@ -1,11 +1,9 @@
 import { defineField, defineType } from 'sanity'
-import { MessageSquare } from 'lucide-react'
 
 export default defineType({
   name: 'contact',
   title: 'Contact Settings',
   type: 'document',
-  icon: MessageSquare,
   fields: [
     defineField({
       name: 'title',

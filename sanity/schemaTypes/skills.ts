@@ -1,11 +1,9 @@
 import { defineField, defineType } from 'sanity'
-import { Code2 } from 'lucide-react'
 
 export default defineType({
   name: 'skills',
   title: 'Skills',
   type: 'document',
-  icon: Code2,
   fields: [
     defineField({
       name: 'title',
