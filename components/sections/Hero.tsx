@@ -17,6 +17,7 @@ export default function Hero({ data }: { data: any }) {
         src={urlFor(data.backgroundImage).width(800).auto('format').url()} 
         alt={data.backgroundImage?.alt || "Background image"} // Add this!
         className="absolute inset-0 w-full h-full object-cover"
+        loading='eager'
         {...({ fetchpriority: "high" } as any)}
       />
           {/* 3. Overlay: Ensures the text is always readable over the image */}

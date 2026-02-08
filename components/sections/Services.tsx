@@ -54,7 +54,7 @@ export default function Services({ data }: { data: any }) {
                         src={urlFor(service.image).width(600).height(400).auto('format').url()} 
                         alt={service.serviceName} 
                         className="w-full h-full object-cover"
-                        loading="lazy" // Services are below-the-fold, lazy load them!
+                        loading="eager" 
                       />
                     )}
                   </div>
