@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react' // Added this
 import Link from 'next/link'
-//import { X } from 'lucide-react'          <X size={32} />
+import { X } from 'lucide-react'         
 
 interface NavOverlayProps {
   isOpen: boolean;
@@ -38,7 +38,7 @@ export default function NavOverlay({ isOpen, onClose, navItems, activeSection }:
         onClick={onClose}
         className="absolute top-6 right-6 p-3 text-white hover:rotate-90 transition-transform duration-300"
       >
-
+       <X size={32} />
       </button>
 
       {/* Navigation Links */}
