@@ -1,15 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu} from 'lucide-react'; // Clean syntax, now optimized by config               
+import { Icons } from '../Icons';
 import Logo from './SocialLinks' 
 import NavOverlay from './NavOverlay'
 
 export default function Header({ data }: { data: any }) {
   const [isOpen, setIsOpen] = useState(false)
-
-  // REMOVED: The entire useEffect and IntersectionObserver. 
-  // This is a diagnostic test to see if the observer is the 2.3s culprit.
 
   if (!data) return null
 
@@ -23,13 +20,15 @@ export default function Header({ data }: { data: any }) {
         <div className="pointer-events-auto">
           <button 
             onClick={() => setIsOpen(true)}
+            aria-label="Open navigation"
             className="group flex items-center gap-3 bg-white/80 backdrop-blur-md border border-gray-200 py-2.5 px-5 rounded-full shadow-sm hover:shadow-lg transition-all duration-300 active:scale-95"
           >
             <span className="text-xs font-black uppercase tracking-[0.2em] text-gray-800">
               Explore
             </span>
             <div className="bg-black text-white p-1.5 rounded-full group-hover:rotate-180 transition-transform duration-500">
-              <Menu size={16} />
+              {/* SWAPPED: Use Icons.Menu with a fixed width/height */}
+              <Icons.Menu className="w-4 h-4" />
             </div>
           </button>
         </div>
@@ -39,7 +38,7 @@ export default function Header({ data }: { data: any }) {
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)} 
         navItems={data.navItems}
-        activeSection="" // Keep it empty for the test
+        activeSection="" 
       />
     </>
   )

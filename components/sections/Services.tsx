@@ -25,7 +25,7 @@ export default function Services({ data }: { data: any }) {
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
             {data?.title || "Services"}
           </h2>
-          <p className="text-gray-500 mt-2">Drag to explore my offerings</p>
+          <p className="text-gray-600 mt-2">Drag to explore my offerings</p>
         </div>
 
         {/* Use m.div instead of motion.div for lazy loading */}

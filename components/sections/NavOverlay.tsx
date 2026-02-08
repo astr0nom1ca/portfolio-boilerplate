@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect } from 'react' // Added this
+import { useEffect } from 'react'
 import Link from 'next/link'
-import { X } from 'lucide-react'         
+import { Icons } from '../Icons';         
 
 interface NavOverlayProps {
   isOpen: boolean;
@@ -13,8 +13,6 @@ interface NavOverlayProps {
 
 export default function NavOverlay({ isOpen, onClose, navItems, activeSection }: NavOverlayProps) {
   
-  // This is the missing piece! 
-  // It stops the body from scrolling when the menu is open.
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -22,7 +20,6 @@ export default function NavOverlay({ isOpen, onClose, navItems, activeSection }:
       document.body.style.overflow = 'unset'
     }
     
-    // Cleanup function: ensures scroll is restored if component unmounts
     return () => {
       document.body.style.overflow = 'unset'
     }
@@ -36,9 +33,11 @@ export default function NavOverlay({ isOpen, onClose, navItems, activeSection }:
       {/* Close Button */}
       <button 
         onClick={onClose}
+        aria-label="Close menu"
         className="absolute top-6 right-6 p-3 text-white hover:rotate-90 transition-transform duration-300"
       >
-       <X size={32} />
+        {/* SWAPPED: Lucide X for Icons.X */}
+        <Icons.X className="w-8 h-8" />
       </button>
 
       {/* Navigation Links */}
