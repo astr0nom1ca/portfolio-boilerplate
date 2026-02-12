@@ -1,4 +1,5 @@
 import { urlFor } from '@/sanity/lib/image';
+import Image from 'next/image'
 
 export default function Hero({ data }: { data: any }) {
   // 1. Guard clause: prevents crashing if data is missing
@@ -13,12 +14,23 @@ export default function Hero({ data }: { data: any }) {
       {/* 2. Background Image Logic */}
       {data?.backgroundImage?.asset && (
         <>
-      <img 
-        src={urlFor(data.backgroundImage).width(800).auto('format').url()} 
-        alt={data.backgroundImage?.alt || "Background image"} // Add this!
-        className="absolute inset-0 w-full h-full object-cover"
-        {...({ fetchpriority: "high" } as any)}
-      />
+    <Image
+                // Use urlFor to target the asset
+                src={urlFor(data.backgroundImage).width(1920).quality(80).url()}
+                alt={data.backgroundImage?.alt || "Hero Background"}
+                
+                // 'fill' makes it act like a background-image
+                fill 
+                
+                // 'priority' is the secret sauce for Hero sections
+                priority 
+                
+                // Ensures it stays behind your text
+                className="object-cover z-0" 
+                
+                // Tells the browser exactly how much space this takes at different screen sizes
+                sizes="100vw"
+            />
           {/* 3. Overlay: Ensures the text is always readable over the image */}
           <div className="absolute inset-0 bg-slate-900/60" />
         </>

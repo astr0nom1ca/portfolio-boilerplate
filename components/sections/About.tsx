@@ -1,5 +1,6 @@
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/sanity/lib/image'
+import Image from 'next/image'
 
 export default function About({ data }: { data: any }) {
   // 1. Safety Guard: If the reference is broken or data hasn't loaded
@@ -10,15 +11,14 @@ export default function About({ data }: { data: any }) {
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         
         {/* Left: Image & Stats */}
-        <div className="relative">
-          {data.image && (
-            <img 
-              // Using .width(600) is great for Lighthouse (Image Optimization)
-              src={urlFor(data.image).width(600).auto('format').url()}
-              alt={data.image?.alt || "Profile Image"} 
-              className="rounded-2xl shadow-xl w-full object-cover aspect-[4/5]"
-            />
-          )}
+      <div className="relative w-full aspect-[4/5]">
+      <Image 
+        src={urlFor(data.image).width(600).url()}
+        alt={data.image?.alt || "Profile Image"}
+        fill // Makes it fill the container
+        className="rounded-2xl shadow-xl object-cover"
+        sizes="(max-width: 768px) 100vw, 600px"
+      />
            
           {/* Stats Box - Only render if stats array exists and has items */}
           {data.stats && data.stats.length > 0 && (
