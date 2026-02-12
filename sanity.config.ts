@@ -10,12 +10,11 @@ import { dashboardTool, projectInfoWidget, projectUsersWidget } from '@sanity/da
 import { apiVersion} from './sanity/env'
 import { schema } from './sanity/schemaTypes' 
 import { structure } from './sanity/structure'
-const projectId = '5ev142c0'
-const dataset = 'production'
+
 export default defineConfig({
   basePath: '/studio',
-  projectId,
-  dataset,
+  projectId:'5ev142c0', 
+  dataset:'production',
   schema: {
     types: schema.types, 
   },
