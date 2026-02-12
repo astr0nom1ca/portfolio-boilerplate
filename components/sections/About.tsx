@@ -11,6 +11,7 @@ export default function About({ data }: { data: any }) {
         
         {/* Left: Image & Stats */}
         <div className="relative">
+          <h1 className="bg-red-500 text-white text-9xl">I AM ALIVE</h1>
           {data.profileImage && (
             <img 
               // Using .width(600) is great for Lighthouse (Image Optimization)
