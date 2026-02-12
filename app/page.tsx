@@ -67,6 +67,9 @@ export default async function Page() {
       <head>
         <link rel="preconnect" href="https://cdn.sanity.io" />
       </head>
+      <pre className="bg-black text-green-400 p-10 h-screen overflow-scroll">
+      {JSON.stringify(page, null, 2)}
+    </pre>
       {/* Header usually stays global/fixed */}
       <Header data={header} />
       

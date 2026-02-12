@@ -7,10 +7,11 @@ import { presentationTool } from 'sanity/presentation'
 // 1. Import the widget creators directly from the dashboard package
 import { dashboardTool, projectInfoWidget, projectUsersWidget } from '@sanity/dashboard'
 
-import { apiVersion, dataset, projectId } from './sanity/env'
+import { apiVersion} from './sanity/env'
 import { schema } from './sanity/schemaTypes' 
 import { structure } from './sanity/structure'
-
+const projectId = '5ev142c0'
+const dataset = 'production'
 export default defineConfig({
   basePath: '/studio',
   projectId,
