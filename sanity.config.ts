@@ -11,6 +11,9 @@ import { apiVersion} from './sanity/env'
 import { schema } from './sanity/schemaTypes' 
 import { structure } from './sanity/structure'
 
+const devUrl = 'http://localhost:3000';
+const prodUrl = 'https://portfolio-boilerplate.vercel.app';
+
 export default defineConfig({
   basePath: '/studio',
   projectId:'5ev142c0', 
@@ -35,11 +38,12 @@ export default defineConfig({
 
     presentationTool({
       previewUrl: {
-        origin: 'http://localhost:3000',
+        origin: typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+          ? devUrl 
+          : prodUrl,
         previewMode: { enable: '/api/draft' },
       },
     }),
-    
     visionTool({ defaultApiVersion: apiVersion }),
   ],
 })
