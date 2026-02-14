@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "createdAt": "2026-02-13T15:15:38.260Z",
+  "createdAt": "2026-02-14T20:41:47.329Z",
   "workspaces": [
     {
       "name": "default",
@@ -17,5 +17,5 @@
       "tools": "6f429549.create-tools.json"
     }
   ],
-  "studioVersion": "5.9.0"
+  "studioVersion": "5.8.1"
 }

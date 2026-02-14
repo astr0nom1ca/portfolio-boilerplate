@@ -1,5 +1,6 @@
 'use client'
 
+import { Iframe } from 'sanity-plugin-iframe-pane'
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
@@ -22,8 +23,26 @@ export default defineConfig({
     types: schema.types, 
   },
   plugins: [
-    structureTool({ structure }),
-    
+structureTool({
+  defaultDocumentNode: (S, { schemaType }) => {
+    // Check if the current document type is in our allowed list
+    if (['page'].includes(schemaType)) {
+      return S.document().views([
+        S.view.form(),
+        S.view
+          .component(Iframe)
+          .options({
+            url: {
+              origin: 'same-origin',
+              previewMode: { enable: '/api/draft' },
+            },
+          })
+          .title('Preview'),
+      ]);
+    }
+    return S.document().views([S.view.form()]);
+  },
+}),
     // 2. Use the widget functions inside the array
     dashboardTool({
       widgets: [
