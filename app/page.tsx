@@ -1,9 +1,12 @@
 import { client } from '@/sanity/lib/client';
 import Header from '@/components/sections/Header';
 import SectionDispatcher from '@/components/SectionDispatcher';
+import { draftMode } from 'next/headers'; // <--- 1. ADD THIS IMPORT
 
-// Updated to accept a slug parameter
-async function getData(slug: string = "index") {
+const token = process.env.SANITY_API_READ_TOKEN;
+
+// 2. FIXED: Added 'isDraftMode' to the parentheses here so the function can use it
+async function getData(slug: string = "index", isDraftMode: boolean = false) {
   const query = `{
     "page": *[_type == "page" && (slug.current == $slug || title == "Home")][0] {
       sections[]-> {
@@ -51,16 +54,30 @@ async function getData(slug: string = "index") {
     }
   }`;
   
-  // Pass the slug variable to the fetch call
-  return await client.fetch(query, { slug }, { next: { revalidate: 60 } });
+  return await client.fetch(
+    query, 
+    { slug }, 
+    { 
+      token, 
+      perspective: isDraftMode ? 'previewDrafts' : 'published',
+      // useCdn must be false for drafts to show up
+      useCdn: isDraftMode ? false : true, 
+      next: { 
+        revalidate: isDraftMode ? 0 : 60 
+      } 
+    }
+  );
 }
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ slug?: string }> }) {
-  // Capture the slug from search parameters (e.g., ?slug=home)
+  // 3. FIXED: We check if draft mode is active here...
+  const { isEnabled: isDraftMode } = await draftMode();
+  
   const resolvedParams = await searchParams;
   const slug = resolvedParams?.slug || "index";
   
-  const { page, header } = await getData(slug);
+  // 4. FIXED: ...and then we "pass" it into getData
+  const { page, header } = await getData(slug, isDraftMode);
 
   return (
     <main>
