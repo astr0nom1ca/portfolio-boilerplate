@@ -25,6 +25,7 @@ export async function GET(request: Request) {
   (await draftMode()).enable()
 
   // Redirect to the actual page. If slug is "index", go to root.
-  const finalPath = slug === 'index' ? '/' : `/${slug || ''}`
-  redirect(finalPath)
+// Change this line in your route.ts
+  const finalPath = (slug === 'index' || slug === 'home') ? '/' : `/${slug || ''}`;
+  redirect(finalPath);
 }
