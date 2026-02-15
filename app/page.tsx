@@ -2,81 +2,70 @@ import { client } from '@/sanity/lib/client';
 import Header from '@/components/sections/Header';
 import SectionDispatcher from '@/components/SectionDispatcher';
 
-async function getData() {
-  /**
-   * We fetch the 'page' document and 'header' singleton.
-   * Inside 'sections', we use '->' to dereference the linked documents.
-   * This retrieves all fields (...) and the _type for each section.
-   */
-const query = `{
-  "page": *[_type == "page" && title == "Home"][0] {
-    sections[]-> {
-      _id,
-      _type,
-      // Use conditional expansion instead of '...' to avoid fetching unused fields
-      _type == "hero" => {
-        heading,
-        subheading,
-        backgroundImage { asset, alt },
-        ctaButtons[] { ctaText, ctaLink }
-      },
-      _type == "project" => {
-        "projects": *[_type == "project"] | order(_createdAt desc) {
+// Updated to accept a slug parameter
+async function getData(slug: string = "index") {
+  const query = `{
+    "page": *[_type == "page" && (slug.current == $slug || title == "Home")][0] {
+      sections[]-> {
+        _id,
+        _type,
+        _type == "hero" => {
+          heading,
+          subheading,
+          backgroundImage { asset, alt },
+          ctaButtons[] { ctaText, ctaLink }
+        },
+        _type == "project" => {
+          "projects": *[_type == "project"] | order(_createdAt desc) {
+            title,
+            description,
+            "image": image { asset, alt }, 
+            link,
+            performanceScore
+          }
+        },
+        _type == "about" => {
           title,
-          description,
-          "image": image { asset, alt }, 
-          link,
-          performanceScore
+          "image": profileImage { asset, alt },
+          bio,
+          stats[] { label, value }
+        },
+        _type == "service" => {
+          "services": *[_type == "service"] | order(_createdAt asc) {
+            serviceName,
+            description,
+            "image": image { asset, alt }
+          }
+        },
+        _type == "skills" => {
+          title,
+          skillList[] { name, icon }
         }
-      },
-      _type == "about" => {
-        title,
-        "image": profileImage { asset, alt },
-        bio,
-        stats[] { label, value }
-      },
-      _type == "service" => {
-        "services": *[_type == "service"] | order(_createdAt asc) {
-          serviceName,
-          description,
-          "image": image { asset, alt }
-        }
-      },
-      _type == "skills" => {
-        title,
-        skillList[] { name, icon }
+      }
+    },
+    "header": *[_type == "header"][0] {
+      navItems,
+      brandItems[] { 
+        "image": image { asset } 
       }
     }
-  },
-  "header": *[_type == "header"][0] {
-    navItems,
-    brandItems[] { 
-      // Only get what's necessary for the logo
-      "image": image { asset } 
-    }
-  }
-}`;
-  return await client.fetch(query, {}, { next: { revalidate: 60 } });
+  }`;
+  
+  // Pass the slug variable to the fetch call
+  return await client.fetch(query, { slug }, { next: { revalidate: 60 } });
 }
 
-export default async function Page() {
-  const { page, header } = await getData();
+export default async function Page({ searchParams }: { searchParams: Promise<{ slug?: string }> }) {
+  // Capture the slug from search parameters (e.g., ?slug=home)
+  const resolvedParams = await searchParams;
+  const slug = resolvedParams?.slug || "index";
+  
+  const { page, header } = await getData(slug);
 
   return (
     <main>
-      <head>
-        <link rel="preconnect" href="https://cdn.sanity.io" />
-      </head>
-
-      {/* Header usually stays global/fixed */}
       <Header data={header} />
-      
-      {/* The Dispatcher now handles Hero, About, Skills, Services, 
-        Projects, and Contact based on Sanity order
-      */}
-     <SectionDispatcher sections={page?.sections || []} />
-      
-      {/* You can add a global Footer here if you have one */}
+      <SectionDispatcher sections={page?.sections || []} />
     </main>
   );
 }

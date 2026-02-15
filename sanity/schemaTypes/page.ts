@@ -9,6 +9,16 @@ export default {
       title: 'Page Title' // Good for internal organization (e.g., "Home Page")
     },
     {
+      name: 'slug',
+      type: 'slug',
+      title: 'Slug',
+      description: 'Set this to Index for the Home Page',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+    },
+    {
       name: 'sections',
       type: 'array',
       title: 'Page Sections',

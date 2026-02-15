@@ -25,17 +25,32 @@ export default defineConfig({
   plugins: [
 structureTool({
   defaultDocumentNode: (S, { schemaType }) => {
-    // Check if the current document type is in our allowed list
+    // Determine the base URL (matching your presentationTool logic)
+    const remoteUrl = 'https://portfolio-boilerplate.vercel.app';
+    const localUrl = 'http://localhost:3000';
+    const baseUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+      ? localUrl 
+      : remoteUrl;
+
     if (['page'].includes(schemaType)) {
       return S.document().views([
         S.view.form(),
         S.view
           .component(Iframe)
           .options({
-            url: {
-              origin: 'same-origin',
-              previewMode: { enable: '/api/draft' },
+            url: (doc: any) => {
+              // If it's the home page, slug might be empty. 
+              // This logic ensures it always points to a real route.
+              const slug = doc?.slug?.current === 'index' ? '' : doc?.slug?.current || '';
+              const remoteUrl = 'https://portfolio-boilerplate.vercel.app';
+              const localUrl = 'http://localhost:3000';
+              const baseUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+                ? localUrl 
+                : remoteUrl;
+
+              return `${baseUrl}/api/draft?slug=${slug}`;
             },
+            reload: { button: true },
           })
           .title('Preview'),
       ]);
